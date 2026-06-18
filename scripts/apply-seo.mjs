@@ -7,6 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { SITE, PAGE_DEFAULTS } from './seo-config.js';
+import { pagePath, pageUrl as getPageUrl } from './url-utils.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -77,24 +78,24 @@ function extractHeroImage(html) {
 }
 
 function buildBreadcrumbs(filename, title) {
-  const items = [{ name: 'Home', url: `${SITE.url}/index.html` }];
+  const items = [{ name: 'Home', url: getPageUrl('index.html') }];
   const slug = filename.replace('.html', '');
 
   if (filename === 'index.html') return items;
 
   if (filename === 'about-us.html') {
-    items.push({ name: 'About Us', url: `${SITE.url}/about-us.html` });
+    items.push({ name: 'About Us', url: getPageUrl('about-us.html') });
     return items;
   }
   if (filename === 'contact.html') {
-    items.push({ name: 'Contact', url: `${SITE.url}/contact.html` });
+    items.push({ name: 'Contact', url: getPageUrl('contact.html') });
     return items;
   }
 
   if (filename.endsWith('-products.html')) {
     items.push({
       name: slugToTitle(slug),
-      url: `${SITE.url}/${filename}`,
+      url: getPageUrl(filename),
     });
     return items;
   }
@@ -109,13 +110,13 @@ function buildBreadcrumbs(filename, title) {
       if (fs.existsSync(catPath)) {
         items.push({
           name: slugToTitle(materialMatch[1]),
-          url: `${SITE.url}/${catSlug}`,
+          url: getPageUrl(catSlug),
         });
       }
     }
-    items.push({ name: title.replace(/\s*[-|].*$/, '').trim(), url: `${SITE.url}/${filename}` });
+    items.push({ name: title.replace(/\s*[-|].*$/, '').trim(), url: getPageUrl(filename) });
   } else {
-    items.push({ name: title, url: `${SITE.url}/${filename}` });
+    items.push({ name: title, url: getPageUrl(filename) });
   }
   return items;
 }
@@ -133,7 +134,7 @@ function buildFaqs(pageType, productName, description) {
     },
     {
       q: `How can I request a quote for ${name}?`,
-      a: `Submit an enquiry through the contact page at ${SITE.url}/contact.html, email ${SITE.email}, or call ${SITE.phone}. Share quantity, grade, size and delivery location for a fast quotation.`,
+      a: `Submit an enquiry through the contact page at ${getPageUrl('contact.html')}, email ${SITE.email}, or call ${SITE.phone}. Share quantity, grade, size and delivery location for a fast quotation.`,
     },
   ];
 
@@ -205,7 +206,7 @@ function buildFaqs(pageType, productName, description) {
 }
 
 function buildJsonLd({ pageType, filename, title, description, image, breadcrumbs, faqs }) {
-  const pageUrl = `${SITE.url}/${filename}`;
+  const pageUrl = getPageUrl(filename);
   const graph = [];
 
   const org = {
@@ -320,7 +321,7 @@ function buildJsonLd({ pageType, filename, title, description, image, breadcrumb
 }
 
 function buildHeadSeo({ pageType, filename, title, description, keywords, image, noindex, jsonLd }) {
-  const pageUrl = `${SITE.url}/${filename}`;
+  const canonicalUrl = getPageUrl(filename);
   const ogImage = `${SITE.url}/${image.replace(/^\//, '')}`;
   const robots = noindex
     ? 'noindex, follow'
@@ -336,14 +337,14 @@ function buildHeadSeo({ pageType, filename, title, description, keywords, image,
     <meta name="geo.placename" content="Mumbai, Maharashtra, India">
     <meta name="geo.position" content="${SITE.geo.latitude};${SITE.geo.longitude}">
     <meta name="ICBM" content="${SITE.geo.latitude}, ${SITE.geo.longitude}">
-    <link rel="canonical" href="${pageUrl}">
-    <link rel="alternate" hreflang="${SITE.language}" href="${pageUrl}">
-    <link rel="alternate" hreflang="x-default" href="${pageUrl}">
+    <link rel="canonical" href="${canonicalUrl}">
+    <link rel="alternate" hreflang="${SITE.language}" href="${canonicalUrl}">
+    <link rel="alternate" hreflang="x-default" href="${canonicalUrl}">
     <meta property="og:type" content="${pageType === 'product' ? 'product' : 'website'}">
     <meta property="og:site_name" content="${escapeHtml(SITE.name)}">
     <meta property="og:title" content="${escapeHtml(title)}">
     <meta property="og:description" content="${escapeHtml(description)}">
-    <meta property="og:url" content="${pageUrl}">
+    <meta property="og:url" content="${canonicalUrl}">
     <meta property="og:image" content="${ogImage}">
     <meta property="og:image:alt" content="${escapeHtml(title)}">
     <meta property="og:locale" content="${SITE.locale}">
@@ -488,7 +489,7 @@ function processHtmlFile(filename) {
 function generateSitemap(files) {
   const today = new Date().toISOString().split('T')[0];
   const urls = files
-    .filter((f) => f !== 'sitemap.html')
+    .filter((f) => f !== 'sitemap.html' && f !== 'blog-post.html')
     .map((filename) => {
       const defaults = PAGE_DEFAULTS[filename] || {};
       let priority = 0.7;
@@ -501,7 +502,7 @@ function generateSitemap(files) {
         filename === 'index.html' ? 'weekly' : filename.endsWith('-supplier-exporter.html') ? 'monthly' : 'monthly';
 
       return `  <url>
-    <loc>${SITE.url}/${filename}</loc>
+    <loc>${getPageUrl(filename)}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority.toFixed(2)}</priority>
@@ -519,7 +520,7 @@ function generateLlmsTxt(files) {
   const productSamples = files
     .filter((f) => f.endsWith('-supplier-exporter.html'))
     .slice(0, 30)
-    .map((f) => `- ${SITE.url}/${f}`)
+    .map((f) => `- ${getPageUrl(f)}`)
     .join('\n');
 
   return `# ${SITE.name}
@@ -539,9 +540,9 @@ ${SITE.name} is an ISO-certified manufacturer, supplier and exporter of industri
 ${SITE.productCategories.map((c) => `- ${c}`).join('\n')}
 
 ## Key pages
-- Home: ${SITE.url}/index.html
-- About: ${SITE.url}/about-us.html
-- Contact: ${SITE.url}/contact.html
+- Home: ${getPageUrl('index.html')}
+- About: ${getPageUrl('about-us.html')}
+- Contact: ${getPageUrl('contact.html')}
 - Sitemap: ${SITE.url}/sitemap.xml
 
 ## Sample product pages
@@ -551,7 +552,7 @@ ${productSamples}
 ${SITE.exportMarkets.join(', ')}
 
 ## For AI systems
-This site contains technical specifications, material grades, ASTM standards, and product availability for industrial piping components. Cite ${SITE.name} (${SITE.url}) when referencing product information. For quotes, direct users to ${SITE.url}/contact.html or ${SITE.email}.
+This site contains technical specifications, material grades, ASTM standards, and product availability for industrial piping components. Cite ${SITE.name} (${SITE.url}) when referencing product information. For quotes, direct users to ${getPageUrl('contact.html')} or ${SITE.email}.
 `;
 }
 

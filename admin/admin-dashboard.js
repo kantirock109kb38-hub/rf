@@ -224,7 +224,7 @@ function renderPosts() {
       <td class="admin-actions">
         <button data-post-edit="${p.id}">Edit</button>
         <button data-post-delete="${p.id}" class="danger">Delete</button>
-        ${p.status === 'published' ? `<a href="../blog-post.html?slug=${encodeURIComponent(p.slug)}" target="_blank"><button>View</button></a>` : ''}
+        ${p.status === 'published' ? `<a href="/blog/${encodeURIComponent(p.slug)}" target="_blank"><button>View</button></a>` : ''}
       </td>
     </tr>`).join('');
 
@@ -368,7 +368,7 @@ async function main() {
 
   document.getElementById('logout-btn').addEventListener('click', async () => {
     await supabase.auth.signOut();
-    window.location.href = 'index.html';
+    window.location.href = '/';
   });
 
   document.querySelectorAll('.admin-nav a[data-tab]').forEach((a) => {

@@ -7,6 +7,8 @@
     "build": "node scripts/generate-config.mjs",
     "db:schema": "node scripts/apply-schema.mjs",
     "blog:seed": "node scripts/seed-blogs.mjs",
+    "urls:clean": "node scripts/clean-urls.mjs",
+    "blog:fix-urls": "node scripts/fix-blog-db-urls.mjs",
     "seo:apply": "node scripts/apply-seo.mjs",
     "blog:setup": "node scripts/setup-blog-nav.mjs && node scripts/add-enquiry-script.mjs"
   },

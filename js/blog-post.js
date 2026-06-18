@@ -75,7 +75,7 @@ async function loadPost() {
   if (!slug) {
     loading.style.display = 'none';
     errorEl.style.display = 'block';
-    errorEl.innerHTML = 'Post not found. <a href="blog.html">Back to blog</a>';
+    errorEl.innerHTML = 'Post not found. <a href="/blog">Back to blog</a>';
     return;
   }
 
@@ -90,7 +90,7 @@ async function loadPost() {
 
     if (error || !data) throw error || new Error('Not found');
 
-    const canonical = `https://www.rfflanges.com/blog-post.html?slug=${encodeURIComponent(data.slug)}`;
+    const canonical = `https://www.rfflanges.com/blog/${encodeURIComponent(data.slug)}`;
 
     document.title = `${data.title} | Ramdevra Forge & Fittings Blog`;
 
@@ -119,7 +119,7 @@ async function loadPost() {
       : '';
 
     article.innerHTML = `
-      <div class="blog-post-back"><a href="blog.html">&larr; Back to Blog</a></div>
+      <div class="blog-post-back"><a href="/blog">&larr; Back to Blog</a></div>
       ${cover}
       <header class="blog-post-header">
         <h1>${escapeHtml(data.title)}</h1>
@@ -134,7 +134,7 @@ async function loadPost() {
   } catch (err) {
     loading.style.display = 'none';
     errorEl.style.display = 'block';
-    errorEl.innerHTML = 'Post not found. <a href="blog.html">Back to blog</a>';
+    errorEl.innerHTML = 'Post not found. <a href="/blog">Back to blog</a>';
     console.error(err);
   }
 }

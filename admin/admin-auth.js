@@ -18,13 +18,13 @@ async function requireAuth() {
   const supabase = getClient();
   const { data: { session }, error } = await supabase.auth.getSession();
   if (error || !session) {
-    window.location.href = 'index.html';
+    window.location.href = '/';
     return null;
   }
 
   supabase.auth.onAuthStateChange((event) => {
     if (event === 'SIGNED_OUT') {
-      window.location.href = 'index.html';
+      window.location.href = '/';
     }
   });
 
@@ -54,7 +54,7 @@ if (loginForm) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
 
-      window.location.href = 'dashboard.html';
+      window.location.href = '/dashboard';
     } catch (err) {
       showAlert('login-alert', err.message || 'Login failed');
     } finally {
@@ -63,7 +63,7 @@ if (loginForm) {
   });
 
   getClient().auth.getSession().then(({ data: { session } }) => {
-    if (session) window.location.href = 'dashboard.html';
+    if (session) window.location.href = '/dashboard';
   });
 }
 

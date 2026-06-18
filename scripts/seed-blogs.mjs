@@ -69,7 +69,7 @@ const POSTS = [
   <li>ISO 9001:2015 certified manufacturing</li>
 </ol>
 
-<p>Ramdevra Forge &amp; Fittings manufactures and exports a full range of <a href="stainless-steel-flanges-supplier-exporter.html">stainless steel flanges</a> from Mumbai, India — including 304, 316, 321, 347, and 904L grades in all pressure classes. <a href="contact.html">Request a quote</a> with your size, rating, and quantity requirements.</p>
+<p>Ramdevra Forge &amp; Fittings manufactures and exports a full range of <a href="/stainless-steel-flanges-supplier-exporter">stainless steel flanges</a> from Mumbai, India — including 304, 316, 321, 347, and 904L grades in all pressure classes. <a href="/contact">Request a quote</a> with your size, rating, and quantity requirements.</p>
 `,
   },
   {
@@ -109,7 +109,7 @@ const POSTS = [
 <h2>Global Sourcing from India</h2>
 <p>India is one of the world's largest exporters of forged flanges. Mumbai's Kumbharwada and surrounding industrial zones host established manufacturers with decades of export experience to the US, Middle East, and Europe.</p>
 
-<p>At <a href="about-us.html">Ramdevra Forge &amp; Fittings</a>, we supply flanges meeting ASTM A182, A105, and ASME B16.5 / B16.47 requirements with full documentation. Browse our <a href="stainless-steel-flanges-supplier-exporter.html">stainless steel flange range</a> or <a href="contact.html">contact our sales team</a> for project-specific quotes.</p>
+<p>At <a href="/about-us">Ramdevra Forge &amp; Fittings</a>, we supply flanges meeting ASTM A182, A105, and ASME B16.5 / B16.47 requirements with full documentation. Browse our <a href="/stainless-steel-flanges-supplier-exporter">stainless steel flange range</a> or <a href="/contact">contact our sales team</a> for project-specific quotes.</p>
 `,
   },
   {
@@ -158,7 +158,7 @@ const POSTS = [
   <li>NACE MR0175 / ISO 15156 compliance for sour service</li>
 </ol>
 
-<p>Ramdevra Forge exports <a href="super-duplex-steel-s32750-s32760-flanges-supplier-exporter.html">super duplex flanges</a>, pipes, fittings, and fasteners to projects worldwide. <a href="contact.html">Get a technical quote</a> with your NACE, temperature, and pressure requirements.</p>
+<p>Ramdevra Forge exports <a href="/super-duplex-steel-s32750-s32760-flanges-supplier-exporter">super duplex flanges</a>, pipes, fittings, and fasteners to projects worldwide. <a href="/contact">Get a technical quote</a> with your NACE, temperature, and pressure requirements.</p>
 `,
   },
   {
@@ -198,7 +198,7 @@ const POSTS = [
   <li>Third-party inspection (TPI) when specified in the PO</li>
 </ul>
 
-<p>Ramdevra Forge supplies <a href="carbon-steel-astm-a234-pipe-fittings-supplier-exporter.html">carbon steel ASTM A234 fittings</a>, stainless and alloy forged fittings, and complete piping packages. Based in Mumbai with global export capability — <a href="contact.html">submit your bill of materials</a> for competitive pricing.</p>
+<p>Ramdevra Forge supplies <a href="/carbon-steel-astm-a234-pipe-fittings-supplier-exporter">carbon steel ASTM A234 fittings</a>, stainless and alloy forged fittings, and complete piping packages. Based in Mumbai with global export capability — <a href="/contact">submit your bill of materials</a> for competitive pricing.</p>
 `,
   },
   {
@@ -237,9 +237,9 @@ const POSTS = [
 </ul>
 
 <h2>About Ramdevra Forge &amp; Fittings</h2>
-<p>Established in 2006, <a href="about-us.html">Ramdevra Forge &amp; Fittings</a> is an ISO 9001:2015 certified manufacturer and exporter of:</p>
+<p>Established in 2006, <a href="/about-us">Ramdevra Forge &amp; Fittings</a> is an ISO 9001:2015 certified manufacturer and exporter of:</p>
 <ul>
-  <li><a href="stainless-steel-flanges-supplier-exporter.html">Stainless steel flanges</a> — 304, 316, 321, 347, 904L</li>
+  <li><a href="/stainless-steel-flanges-supplier-exporter">Stainless steel flanges</a> — 304, 316, 321, 347, 904L</li>
   <li>Carbon steel and alloy steel flanges — A105, A182, A350</li>
   <li>Pipe fittings, forged fittings, fasteners, and specialty alloys</li>
 </ul>
@@ -247,7 +247,7 @@ const POSTS = [
 
 <h2>Request a Quote</h2>
 <p>Email <strong>sales@rfflanges.com</strong> or call <strong>+91-9920142161</strong> with your flange specification, quantity, and delivery destination. Our team responds within 24 hours on business days.</p>
-<p><a href="contact.html" class="fixit_btn">Contact Us Today</a></p>
+<p><a href="/contact" class="fixit_btn">Contact Us Today</a></p>
 `,
   },
 ];
@@ -296,7 +296,7 @@ async function main() {
   let sitemap = fs.readFileSync(sitemapPath, 'utf8');
 
   for (const row of rows) {
-    const loc = `${SITE}/blog-post.html?slug=${encodeURIComponent(row.slug)}`;
+    const loc = `${SITE}/blog/${encodeURIComponent(row.slug)}`;
     if (sitemap.includes(loc)) continue;
     const lastmod = new Date(row.published_at).toISOString().slice(0, 10);
     const entry = `  <url>

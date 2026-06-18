@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const NEW_EMAIL = 'sales@rfflanges.com';
 const CLEAN_FOOTER =
-  'Copyright &copy; Ramdevra Forge & Fittings 2020. | <a href="https://www.rfflanges.com/">RF Flanges</a> | <a href="sitemap.html">Sitemap</a>';
+  'Copyright &copy; Ramdevra Forge & Fittings 2020. | <a href="https://www.rfflanges.com/">RF Flanges</a> | <a href="/sitemap">Sitemap</a>';
 
 function patchContent(content) {
   let next = content;
@@ -19,17 +19,17 @@ function patchContent(content) {
   );
 
   next = next.replace(
-    /Copyright &copy; Seamac Piping Solutions 2019\. Design and SEO by <a href="https:\/\/www\.rathinfotech\.com\/">RATH Infotech<\/a> \| <a href="https:\/\/www\.pipingmart\.com\/">Piping Mart<\/a> \| <a href="https:\/\/www\.seamacpiping\.com\/sitemap\.html">Sitemap<\/a>/gi,
+    /Copyright &copy; Seamac Piping Solutions 2019\. Design and SEO by <a href="https:\/\/www\.rathinfotech\.com\/">RATH Infotech<\/a> \| <a href="https:\/\/www\.pipingmart\.com\/">Piping Mart<\/a> \| <a href="/https:\/\/www\.seamacpiping\.com\/sitemap\">Sitemap<\/a>/gi,
     CLEAN_FOOTER
   );
 
   next = next.replace(
-    /Copyright &copy; Ramdevra Forge & Fittings 2020\. \| <a href="https:\/\/www\.ramdevraforge\.com\/">Ramdevra Forge<\/a> \| <a href="sitemap\.html">Sitemap<\/a>/gi,
+    /Copyright &copy; Ramdevra Forge & Fittings 2020\. \| <a href="https:\/\/www\.ramdevraforge\.com\/">Ramdevra Forge<\/a> \| <a href="(?:sitemap\.html|\/sitemap)">Sitemap<\/a>/gi,
     CLEAN_FOOTER
   );
 
   next = next.replace(
-    /Copyright &copy; Ramdevra Forge & Fittings 2020\. <a href="https:\/\/www\.ramdevraforge\.com\/">Ramdevra Forge<\/a> \| <a href="sitemap\.html">Sitemap<\/a>/gi,
+    /Copyright &copy; Ramdevra Forge & Fittings 2020\. <a href="https:\/\/www\.ramdevraforge\.com\/">Ramdevra Forge<\/a> \| <a href="(?:sitemap\.html|\/sitemap)">Sitemap<\/a>/gi,
     CLEAN_FOOTER
   );
 

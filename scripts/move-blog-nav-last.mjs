@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const BLOG_LINE = /<li(?: class="active")?><a href="blog\.html">blog<\/a><\/li>\s*\n?/gi;
+const BLOG_LINE = /<li(?: class="active")?><a href="/blog\">blog<\/a><\/li>\s*\n?/gi;
 
 function moveBlogNav(html) {
   if (!html.includes('contact.html">contact')) return html;
@@ -13,8 +13,8 @@ function moveBlogNav(html) {
   if (html.includes('href="blog.html"')) return html;
 
   return html.replace(
-    /(\n[ \t]*)(<li(?: class="active")?><a href="contact\.html">contact<\/a><\/li>)/i,
-    (_, indent, contactLi) => `${indent}${contactLi}\n${indent}<li><a href="blog.html">blog</a></li>`
+    /(\n[ \t]*)(<li(?: class="active")?><a href="/contact\">contact<\/a><\/li>)/i,
+    (_, indent, contactLi) => `${indent}${contactLi}\n${indent}<li><a href="/blog">blog</a></li>`
   );
 }
 

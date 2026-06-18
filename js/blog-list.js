@@ -13,7 +13,7 @@ function cardHtml(post) {
 
   return `
     <article class="blog-card fixit_custom_anim">
-      <a href="blog-post.html?slug=${encodeURIComponent(post.slug)}" class="blog-card-image">
+      <a href="/blog/${encodeURIComponent(post.slug)}" class="blog-card-image">
         <img src="${img}" alt="${escapeAttr(post.title)}" loading="lazy">
       </a>
       <div class="blog-card-body">
@@ -22,10 +22,10 @@ function cardHtml(post) {
           <span class="author">${escapeAttr(author)}</span>
         </div>
         <h2 class="blog-card-title">
-          <a href="blog-post.html?slug=${encodeURIComponent(post.slug)}">${escapeHtml(post.title)}</a>
+          <a href="/blog/${encodeURIComponent(post.slug)}">${escapeHtml(post.title)}</a>
         </h2>
         <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>
-        <a href="blog-post.html?slug=${encodeURIComponent(post.slug)}" class="fixit_btn blog-read-more">Read More</a>
+        <a href="/blog/${encodeURIComponent(post.slug)}" class="fixit_btn blog-read-more">Read More</a>
       </div>
     </article>`;
 }
