@@ -5,16 +5,29 @@ function getClient() {
   if (!cfg?.url || !cfg?.anonKey || cfg.url.includes('YOUR_') || cfg.anonKey.includes('YOUR_')) {
     throw new Error('Configure Supabase env vars and run npm run config:generate.');
   }
-  return createClient(cfg.url, cfg.anonKey);
+  return createClient(cfg.url, cfg.anonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: false,
+    },
+  });
 }
 
 async function requireAuth() {
   const supabase = getClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
+  const { data: { session }, error } = await supabase.auth.getSession();
+  if (error || !session) {
     window.location.href = 'index.html';
     return null;
   }
+
+  supabase.auth.onAuthStateChange((event) => {
+    if (event === 'SIGNED_OUT') {
+      window.location.href = 'index.html';
+    }
+  });
+
   return { supabase, session };
 }
 

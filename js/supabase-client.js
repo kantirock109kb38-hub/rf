@@ -12,7 +12,13 @@ export function getSupabase() {
     );
   }
 
-  client = createClient(cfg.url, cfg.anonKey);
+  client = createClient(cfg.url, cfg.anonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: false,
+    },
+  });
   return client;
 }
 
