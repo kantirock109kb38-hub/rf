@@ -1,0 +1,15 @@
+{
+  "name": "ramdevra-forge-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "config:generate": "node scripts/generate-config.mjs",
+    "build": "node scripts/generate-config.mjs",
+    "db:schema": "node scripts/apply-schema.mjs",
+    "seo:apply": "node scripts/apply-seo.mjs",
+    "blog:setup": "node scripts/setup-blog-nav.mjs && node scripts/add-enquiry-script.mjs"
+  },
+  "devDependencies": {
+    "pg": "^8.21.0"
+  }
+}

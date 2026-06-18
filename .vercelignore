@@ -1,0 +1,5 @@
+default.php
+.env
+.env.*
+scripts/apply-schema.mjs
+supabase/
