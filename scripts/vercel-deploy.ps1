@@ -14,7 +14,9 @@ Get-Content '.env.local' | ForEach-Object {
   $v = $v.Trim()
   if ($k -in @('SUPABASE_URL', 'SUPABASE_ANON_KEY')) {
     Write-Host "Setting Vercel env: $k"
-    $v | npx vercel env add $k production preview development --force
+    foreach ($env in @('production', 'preview', 'development')) {
+      $v | npx vercel env add $k $env --force 2>$null
+    }
   }
 }
 
