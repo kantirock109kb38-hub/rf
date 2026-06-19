@@ -45,7 +45,11 @@ export function toCleanHref(href) {
   while (path.startsWith('../')) path = path.slice(3);
 
   if (path === 'index.html') return `/${suffix}`;
-  if (path === 'admin/index.html') return `/admin${suffix}`;
+  if (path === 'admin/index.html' || path === 'admin/index') return `/admin${suffix}`;
+  if (path === 'admin/dashboard.html' || path === 'admin/dashboard') return `/admin/dashboard${suffix}`;
+  if (path.startsWith('admin/') && path.endsWith('.html')) {
+    return `/${path.slice(0, -5)}${suffix}`;
+  }
   if (path.endsWith('.html')) path = path.slice(0, -5);
 
   return `/${path}${suffix}`;

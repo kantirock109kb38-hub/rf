@@ -1,9 +1,12 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.1/+esm';
 
+const ADMIN_LOGIN = '/admin';
+const ADMIN_DASHBOARD = '/admin/dashboard';
+
 function getClient() {
   const cfg = window.SUPABASE_CONFIG;
   if (!cfg?.url || !cfg?.anonKey || cfg.url.includes('YOUR_') || cfg.anonKey.includes('YOUR_')) {
-    throw new Error('Configure Supabase env vars and run npm run config:generate.');
+    throw new Error('Site configuration error. Contact your developer.');
   }
   return createClient(cfg.url, cfg.anonKey, {
     auth: {
@@ -18,13 +21,13 @@ async function requireAuth() {
   const supabase = getClient();
   const { data: { session }, error } = await supabase.auth.getSession();
   if (error || !session) {
-    window.location.href = '/';
+    window.location.href = ADMIN_LOGIN;
     return null;
   }
 
   supabase.auth.onAuthStateChange((event) => {
     if (event === 'SIGNED_OUT') {
-      window.location.href = '/';
+      window.location.href = ADMIN_LOGIN;
     }
   });
 
@@ -38,12 +41,28 @@ function showAlert(id, msg) {
   el.style.display = 'block';
 }
 
+function friendlyAuthError(err) {
+  const msg = err?.message || '';
+  if (msg.includes('Invalid login credentials')) {
+    return 'Invalid email or password. Check your credentials and try again.';
+  }
+  if (msg.includes('Email not confirmed')) {
+    return 'Email not confirmed. In Supabase Dashboard → Authentication → Users, confirm your account or disable email confirmation.';
+  }
+  if (msg.includes('not configured')) {
+    return 'Admin is temporarily unavailable. Configuration missing.';
+  }
+  return msg || 'Login failed. Please try again.';
+}
+
 // Login page
 const loginForm = document.getElementById('login-form');
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = loginForm.querySelector('button[type="submit"]');
+    const alertEl = document.getElementById('login-alert');
+    if (alertEl) alertEl.style.display = 'none';
     btn.disabled = true;
 
     try {
@@ -54,17 +73,20 @@ if (loginForm) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
 
-      window.location.href = '/dashboard';
+      window.location.href = ADMIN_DASHBOARD;
     } catch (err) {
-      showAlert('login-alert', err.message || 'Login failed');
+      showAlert('login-alert', friendlyAuthError(err));
     } finally {
       btn.disabled = false;
     }
   });
 
-  getClient().auth.getSession().then(({ data: { session } }) => {
-    if (session) window.location.href = '/dashboard';
-  });
+  getClient()
+    .auth.getSession()
+    .then(({ data: { session } }) => {
+      if (session) window.location.href = ADMIN_DASHBOARD;
+    })
+    .catch((err) => showAlert('login-alert', friendlyAuthError(err)));
 }
 
-export { getClient, requireAuth, showAlert };
+export { getClient, requireAuth, showAlert, ADMIN_LOGIN, ADMIN_DASHBOARD };

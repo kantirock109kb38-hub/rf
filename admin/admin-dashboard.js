@@ -1,4 +1,4 @@
-import { requireAuth, showAlert } from './admin-auth.js';
+import { requireAuth, showAlert, ADMIN_LOGIN } from './admin-auth.js';
 
 let supabase = null;
 let allLeads = [];
@@ -368,7 +368,7 @@ async function main() {
 
   document.getElementById('logout-btn').addEventListener('click', async () => {
     await supabase.auth.signOut();
-    window.location.href = '/';
+    window.location.href = ADMIN_LOGIN;
   });
 
   document.querySelectorAll('.admin-nav a[data-tab]').forEach((a) => {

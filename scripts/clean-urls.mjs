@@ -44,13 +44,15 @@ function patchHrefAttributes(content) {
 }
 
 function patchLocationAssignments(content) {
-  return content.replace(
-    /(window\.location\.href\s*=\s*['"])([^'"]+\.html(?:\?[^'"]*)?)(['"])/g,
-    (match, prefix, href, suffix) => {
-      const cleaned = toCleanHref(href);
-      return cleaned === href ? match : `${prefix}${cleaned}${suffix}`;
-    }
-  );
+  return content
+    .replace(/window\.location\.href\s*=\s*['"]\/dashboard['"]/g, "window.location.href = '/admin/dashboard'")
+    .replace(
+      /(window\.location\.href\s*=\s*['"])([^'"]+\.html(?:\?[^'"]*)?)(['"])/g,
+      (match, prefix, href, suffix) => {
+        const cleaned = toCleanHref(href);
+        return cleaned === href ? match : `${prefix}${cleaned}${suffix}`;
+      }
+    );
 }
 
 function patchCanonicalAndOg(content) {
