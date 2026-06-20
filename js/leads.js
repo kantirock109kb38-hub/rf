@@ -54,7 +54,17 @@ function initEnquiryForm() {
       const { error } = await supabase.from('leads').insert(payload);
       if (error) throw error;
 
-      showMsg(msg, 'success', 'Thank you! Your enquiry has been submitted. We will contact you shortly.');
+      try {
+        await fetch('/api/send-enquiry', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch (mailErr) {
+        console.warn('Email notification failed (lead saved):', mailErr);
+      }
+
+      showMsg(msg, 'success', 'Thank you! Your enquiry has been submitted. A confirmation email has been sent. We will contact you shortly.');
       form.reset();
       if (productFromUrl && productField) {
         productField.value = decodeURIComponent(productFromUrl.replace(/\+/g, ' '));
