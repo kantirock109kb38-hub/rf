@@ -68,6 +68,28 @@ function injectArticleSchema(data, canonical) {
   script.textContent = JSON.stringify(schema);
 }
 
+function relatedProductsHtml(title, content) {
+  const text = `${title} ${content}`.toLowerCase();
+  const links = [
+    { href: '/stainless-steel-flanges-supplier-exporter', label: 'Stainless Steel Flanges', keys: ['flange', 'astm', 'ansi', 'asme'] },
+    { href: '/carbon-steel-astm-a234-pipe-fittings-supplier-exporter', label: 'Carbon Steel Pipe Fittings', keys: ['pipe fitting', 'butt weld', 'oil', 'gas'] },
+    { href: '/super-duplex-steel-s32750-s32760-flanges-supplier-exporter', label: 'Super Duplex Flanges', keys: ['duplex', 'super duplex', 's32750'] },
+    { href: '/stainless-steel-pipes-supplier-exporter', label: 'Stainless Steel Pipes', keys: ['pipe', 'piping'] },
+    { href: '/stainless-steel-forged-fittings-supplier-exporter', label: 'Stainless Steel Forged Fittings', keys: ['forged', 'fitting'] },
+    { href: '/contact', label: 'Request a Quote', keys: [] },
+  ];
+
+  const matched = links.filter((l) => l.keys.length === 0 || l.keys.some((k) => text.includes(k)));
+  const picked = matched.length > 1 ? matched.slice(0, 5) : links.slice(0, 5);
+
+  const items = picked.map((l) => `<li><a href="${l.href}">${escapeHtml(l.label)}</a></li>`).join('');
+  return `
+      <aside class="blog-related-products">
+        <h3>Explore Our Products</h3>
+        <ul class="aeo-related-links">${items}</ul>
+      </aside>`;
+}
+
 async function loadPost() {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug');
@@ -127,7 +149,8 @@ async function loadPost() {
           ${date} · ${escapeHtml(data.author_name || 'Ramdevra Forge')}
         </div>
       </header>
-      <div class="blog-post-content">${data.content}</div>`;
+      <div class="blog-post-content">${data.content}</div>
+      ${relatedProductsHtml(data.title, data.content)}`;
 
     article.style.display = 'block';
     loading.style.display = 'none';

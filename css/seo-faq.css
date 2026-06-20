@@ -1,54 +1,52 @@
-/* AEO / FAQ section — lightweight, accessible */
-.aeo-faq-section {
-  padding: 48px 0 56px;
-  background: #f8f9fa;
+/* Related products internal linking */
+.aeo-related-section {
+  padding: 40px 0 48px;
+  background: #fff;
   border-top: 1px solid #e9ecef;
 }
 
-.aeo-faq-section h2 {
-  font-size: 1.75rem;
-  margin-bottom: 1.25rem;
+.aeo-related-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
   color: #1a1a2e;
 }
 
-.aeo-faq-list {
-  max-width: 900px;
-}
-
-.aeo-faq-item {
-  background: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  margin-bottom: 0.75rem;
+.aeo-related-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
   padding: 0;
 }
 
-.aeo-faq-item summary {
-  cursor: pointer;
+.aeo-related-links a {
+  display: inline-block;
+  padding: 8px 14px;
+  background: #f4f6f8;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  color: #0d9243;
+  font-size: 14px;
   font-weight: 600;
-  padding: 1rem 1.25rem;
-  list-style: none;
-  color: #2c3e50;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
 }
 
-.aeo-faq-item summary::-webkit-details-marker {
-  display: none;
+.aeo-related-links a:hover {
+  background: #e8f5ee;
+  border-color: #0d9243;
+  text-decoration: none;
 }
 
-.aeo-faq-item summary::before {
-  content: "+ ";
-  color: #c0392b;
-  font-weight: 700;
-  margin-right: 0.35rem;
+.blog-related-products {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e9ecef;
 }
 
-.aeo-faq-item[open] summary::before {
-  content: "− ";
-}
-
-.aeo-faq-item p {
-  margin: 0;
-  padding: 0 1.25rem 1rem;
-  line-height: 1.65;
-  color: #495057;
+.blog-related-products h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #36434d;
 }

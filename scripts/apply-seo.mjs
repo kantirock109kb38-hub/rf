@@ -577,6 +577,7 @@ fs.writeFileSync(
   path.join(ROOT, 'robots.txt'),
   `User-agent: *
 Allow: /
+Disallow: /admin/
 
 User-agent: GPTBot
 Allow: /
