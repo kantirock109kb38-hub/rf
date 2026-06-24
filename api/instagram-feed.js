@@ -7,7 +7,13 @@ const IG_HEADERS = {
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   'X-IG-App-ID': '936619743392459',
   'X-Requested-With': 'XMLHttpRequest',
-  Accept: 'application/json',
+  'X-ASBD-ID': '129477',
+  'Sec-Fetch-Site': 'same-origin',
+  'Sec-Fetch-Mode': 'cors',
+  'Sec-Fetch-Dest': 'empty',
+  Referer: `https://www.instagram.com/${USERNAME}/`,
+  Accept: '*/*',
+  'Accept-Language': 'en-US,en;q=0.9',
 };
 
 function mapEdges(edges) {
