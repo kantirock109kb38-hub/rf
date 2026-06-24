@@ -1,6 +1,9 @@
 /**
  * Vercel serverless — fetches recent public Instagram posts for the homepage feed.
  */
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
 const USERNAME = 'ramdevraforge';
 const IG_HEADERS = {
   'User-Agent':
@@ -65,6 +68,16 @@ async function fetchViaProfileHtml() {
   return posts.filter((p) => p.image);
 }
 
+function loadFallbackPosts() {
+  try {
+    const file = join(process.cwd(), 'data', 'instagram-posts.json');
+    const data = JSON.parse(readFileSync(file, 'utf8'));
+    return Array.isArray(data.posts) ? data.posts : [];
+  } catch {
+    return [];
+  }
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
@@ -74,19 +87,23 @@ export default async function handler(req, res) {
   }
 
   try {
-    const posts = (await fetchViaApi()) || (await fetchViaProfileHtml()) || [];
+    const live = (await fetchViaApi()) || (await fetchViaProfileHtml());
+    const posts = live?.length ? live : loadFallbackPosts();
     return res.status(200).json({
       ok: posts.length > 0,
       username: USERNAME,
       profileUrl: `https://www.instagram.com/${USERNAME}/`,
       posts,
+      source: live?.length ? 'live' : 'cached',
     });
   } catch {
+    const posts = loadFallbackPosts();
     return res.status(200).json({
-      ok: false,
+      ok: posts.length > 0,
       username: USERNAME,
       profileUrl: `https://www.instagram.com/${USERNAME}/`,
-      posts: [],
+      posts,
+      source: 'cached',
     });
   }
 }

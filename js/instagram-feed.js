@@ -26,38 +26,57 @@
       return res.json();
     })
     .then(function (data) {
-      profileUrl = data.profileUrl || profileUrl;
-
-      if (!data.ok || !data.posts || !data.posts.length) {
-        showFallback('Follow us on Instagram for the latest updates —');
+      if (data.ok && data.posts && data.posts.length) {
+        renderPosts(data);
         return;
       }
-
-      grid.innerHTML = data.posts
-        .map(function (post) {
-          var videoBadge = post.isVideo
-            ? '<span class="rf-ig-video" aria-hidden="true"><i class="fa fa-play"></i></span>'
-            : '';
-          var alt = post.caption ? esc(post.caption) : 'Ramdevra Forge on Instagram';
-
-          return (
-            '<a class="rf-ig-item" href="' +
-            esc(post.url) +
-            '" target="_blank" rel="noopener noreferrer" title="' +
-            alt +
-            '">' +
-            '<img src="' +
-            esc(post.image) +
-            '" alt="' +
-            alt +
-            '" loading="lazy" decoding="async" />' +
-            videoBadge +
-            '</a>'
-          );
-        })
-        .join('');
+      return fetch('/data/instagram-posts.json').then(function (res) {
+        return res.json();
+      });
+    })
+    .then(function (data) {
+      if (!data || !data.posts) return;
+      if (grid.querySelector('.rf-ig-item')) return;
+      renderPosts(data);
     })
     .catch(function () {
-      showFallback('Follow us on Instagram for the latest updates —');
+      fetch('/data/instagram-posts.json')
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (data) {
+          if (data.posts && data.posts.length) renderPosts(data);
+          else showFallback('Follow us on Instagram for the latest updates —');
+        })
+        .catch(function () {
+          showFallback('Follow us on Instagram for the latest updates —');
+        });
     });
+
+  function renderPosts(data) {
+    profileUrl = data.profileUrl || profileUrl;
+    grid.innerHTML = data.posts
+      .map(function (post) {
+        var videoBadge = post.isVideo
+          ? '<span class="rf-ig-video" aria-hidden="true"><i class="fa fa-play"></i></span>'
+          : '';
+        var alt = post.caption ? esc(post.caption) : 'Ramdevra Forge on Instagram';
+
+        return (
+          '<a class="rf-ig-item" href="' +
+          esc(post.url) +
+          '" target="_blank" rel="noopener noreferrer" title="' +
+          alt +
+          '">' +
+          '<img src="' +
+          esc(post.image) +
+          '" alt="' +
+          alt +
+          '" loading="lazy" decoding="async" />' +
+          videoBadge +
+          '</a>'
+        );
+      })
+      .join('');
+  }
 })();
