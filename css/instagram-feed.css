@@ -29,6 +29,7 @@
   overflow: hidden;
   border-radius: 4px;
   aspect-ratio: 1;
+  min-height: 120px;
   background: #e8e8e8;
 }
 

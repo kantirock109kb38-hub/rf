@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "config:generate": "node scripts/generate-config.mjs",
-    "build": "node scripts/generate-config.mjs",
+    "build": "node scripts/generate-config.mjs && node scripts/inject-social-gallery.mjs",
     "db:schema": "node scripts/apply-schema.mjs",
     "blog:seed": "node scripts/seed-blogs.mjs",
     "urls:clean": "node scripts/clean-urls.mjs",
@@ -12,7 +12,7 @@
     "seo:apply": "node scripts/apply-seo.mjs",
     "seo:enhance": "node scripts/seo-enhance.mjs",
     "sticky:add": "node scripts/add-sticky-contact.mjs",
-    "ig:refresh": "node scripts/refresh-instagram.mjs",
+    "ig:refresh": "node scripts/refresh-instagram.mjs && node scripts/inject-social-gallery.mjs",
     "blog:setup": "node scripts/setup-blog-nav.mjs && node scripts/add-enquiry-script.mjs"
   },
   "devDependencies": {

@@ -1,13 +1,15 @@
 /**
- * Refreshes data/instagram-posts.json from the public Instagram profile API.
- * Run locally: npm run ig:refresh
+ * Fetches Instagram posts and saves thumbnails locally (neutral paths for ad-blocker safety).
+ * Run: npm run ig:refresh
  */
-import { writeFileSync } from 'fs';
+import { writeFileSync, mkdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const USERNAME = 'ramdevraforge';
-const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'data', 'instagram-posts.json');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const OUT_JSON = join(ROOT, 'data', 'instagram-posts.json');
+const IMG_DIR = join(ROOT, 'images', 'gallery');
 
 const headers = {
   'User-Agent':
@@ -28,18 +30,39 @@ const res = await fetch(
 );
 
 if (!res.ok) {
-  console.error('Instagram API error:', res.status, await res.text());
+  console.error('Instagram API error:', res.status);
   process.exit(1);
 }
 
 const data = await res.json();
 const edges = data?.data?.user?.edge_owner_to_timeline_media?.edges || [];
-const posts = edges.slice(0, 12).map(({ node }) => ({
-  shortcode: node.shortcode,
-  url: `https://www.instagram.com/p/${node.shortcode}/`,
-  image: node.thumbnail_resources?.slice(-1)[0]?.src || node.thumbnail_src || node.display_url,
-  isVideo: Boolean(node.is_video),
-}));
+mkdirSync(IMG_DIR, { recursive: true });
+
+const posts = [];
+for (const { node } of edges.slice(0, 12)) {
+  const shortcode = node.shortcode;
+  const remote =
+    node.thumbnail_resources?.slice(-1)[0]?.src || node.thumbnail_src || node.display_url;
+  const localPath = `/images/gallery/${shortcode}.jpg`;
+  const localFile = join(IMG_DIR, `${shortcode}.jpg`);
+
+  try {
+    const imgRes = await fetch(remote, { headers: { 'User-Agent': headers['User-Agent'] } });
+    if (imgRes.ok) {
+      const buf = Buffer.from(await imgRes.arrayBuffer());
+      writeFileSync(localFile, buf);
+    }
+  } catch (err) {
+    console.warn('Image download failed for', shortcode, err.message);
+  }
+
+  posts.push({
+    shortcode,
+    url: `https://www.instagram.com/p/${shortcode}/`,
+    image: localPath,
+    isVideo: Boolean(node.is_video),
+  });
+}
 
 const payload = {
   username: USERNAME,
@@ -48,5 +71,5 @@ const payload = {
   posts,
 };
 
-writeFileSync(OUT, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
-console.log(`Wrote ${posts.length} posts to data/instagram-posts.json`);
+writeFileSync(OUT_JSON, `${JSON.stringify(payload, null, 2)}\n`, 'utf8');
+console.log(`Saved ${posts.length} posts to data/instagram-posts.json`);
