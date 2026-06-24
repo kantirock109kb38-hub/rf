@@ -12,7 +12,8 @@
     "seo:apply": "node scripts/apply-seo.mjs",
     "seo:enhance": "node scripts/seo-enhance.mjs",
     "sticky:add": "node scripts/add-sticky-contact.mjs",
-    "ig:refresh": "node scripts/refresh-instagram.mjs && node scripts/inject-social-gallery.mjs",
+    "gallery:refresh": "node scripts/refresh-instagram.mjs && node scripts/inject-social-gallery.mjs",
+    "ig:refresh": "npm run gallery:refresh",
     "blog:setup": "node scripts/setup-blog-nav.mjs && node scripts/add-enquiry-script.mjs"
   },
   "devDependencies": {

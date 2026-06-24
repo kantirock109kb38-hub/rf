@@ -1,0 +1,55 @@
+.rf-gallery-section {
+  background-color: #f7f7f7;
+  padding-bottom: 50px;
+}
+
+.rf-gallery-section .fixit_ourclients_slider {
+  margin-bottom: 28px;
+}
+
+.rf-gallery-section .fixit_ourclients_slider .item {
+  padding: 6px;
+  cursor: pointer;
+}
+
+.rf-gallery-section .fixit_ourclients_slider .item img {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 160px;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #e0e0e0;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.rf-gallery-section .rf-ig-video {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.rf-gallery-section .item-inner {
+  position: relative;
+  display: block;
+}
+
+.rf-ig-cta {
+  margin: 0;
+}
+
+.rf-ig-cta .fixit_btn {
+  display: inline-block;
+}

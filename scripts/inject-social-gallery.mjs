@@ -1,5 +1,5 @@
 /**
- * Injects static social gallery HTML into index.html (no JS required to display posts).
+ * Injects gallery tiles into index.html using the same Owl Carousel markup as "Our clients".
  */
 import { readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -23,13 +23,15 @@ function esc(str) {
 const { posts = [] } = JSON.parse(readFileSync(DATA, 'utf8'));
 const gridHtml = posts
   .map((post) => {
+    const image = esc(post.image).replace(/^\/images\//, 'images/');
     const video = post.isVideo
       ? '<span class="rf-ig-video" aria-hidden="true"><i class="fa fa-play"></i></span>'
       : '';
     return (
-      `<a class="rf-ig-item" href="${esc(post.url)}" target="_blank" rel="noopener noreferrer" title="Ramdevra Forge on social media">` +
-      `<img src="${esc(post.image)}" alt="Ramdevra Forge product photo" loading="lazy" decoding="async" width="320" height="320" />` +
-      `${video}</a>`
+      `<div class="item" data-sc="${esc(post.shortcode)}" role="button" tabindex="0" aria-label="View product photo">` +
+      `<div class="item-inner">` +
+      `<img src="${image}" alt="Ramdevra Forge product photo" width="320" height="320" />` +
+      `${video}</div></div>`
     );
   })
   .join('\n');
@@ -43,4 +45,4 @@ if (!html.includes(START) || !html.includes(END)) {
 const pattern = new RegExp(`${START}[\\s\\S]*?${END}`);
 html = html.replace(pattern, `${START}\n${gridHtml}\n${END}`);
 writeFileSync(INDEX, html, 'utf8');
-console.log(`Injected ${posts.length} gallery items into index.html`);
+console.log(`Injected ${posts.length} gallery tiles into index.html`);

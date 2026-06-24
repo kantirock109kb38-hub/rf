@@ -43,7 +43,7 @@ for (const { node } of edges.slice(0, 12)) {
   const shortcode = node.shortcode;
   const remote =
     node.thumbnail_resources?.slice(-1)[0]?.src || node.thumbnail_src || node.display_url;
-  const localPath = `/images/gallery/${shortcode}.jpg`;
+  const localPath = `images/gallery/${shortcode}.jpg`;
   const localFile = join(IMG_DIR, `${shortcode}.jpg`);
 
   try {
