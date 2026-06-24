@@ -2,6 +2,11 @@
   "username": "ramdevraforge",
   "profileUrl": "https://www.instagram.com/ramdevraforge/",
   "updatedAt": "2026-06-24",
+  "profile": {
+    "username": "ramdevraforge",
+    "fullName": "RAMDEVRA FORGE 🇮🇳",
+    "avatar": "images/gallery/profile.jpg"
+  },
   "posts": [
     {
       "shortcode": "DZc2qEBMnEj",

@@ -1,55 +1,187 @@
-.rf-gallery-section {
-  background-color: #f7f7f7;
-  padding-bottom: 50px;
+/**
+ * Elfsight Instagram Feed — visual clone (grid layout, header, hover overlay).
+ */
+.eapps-instagram-feed {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 15px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #262626;
 }
 
-.rf-gallery-section .fixit_ourclients_slider {
-  margin-bottom: 28px;
+.eapps-instagram-feed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border: 1px solid #e6e6e6;
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  background: #fff;
 }
 
-.rf-gallery-section .fixit_ourclients_slider .item {
-  padding: 6px;
+.eapps-instagram-feed-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.eapps-instagram-feed-header-user-image {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  background: #fafafa;
   cursor: pointer;
 }
 
-.rf-gallery-section .fixit_ourclients_slider .item img {
+.eapps-instagram-feed-header-user-image img {
   display: block !important;
-  width: 100% !important;
-  height: auto !important;
-  min-height: 160px;
-  max-height: 220px;
+  width: 48px !important;
+  height: 48px !important;
   object-fit: cover;
-  border-radius: 4px;
-  background: #e0e0e0;
   visibility: visible !important;
   opacity: 1 !important;
 }
 
-.rf-gallery-section .rf-ig-video {
+.eapps-instagram-feed-header-user {
+  min-width: 0;
+}
+
+.eapps-instagram-feed-header-user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  line-height: 18px;
+}
+
+.eapps-instagram-feed-header-user-fullname {
+  font-size: 13px;
+  color: #8e8e8e;
+  line-height: 16px;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eapps-instagram-feed-header-follow-button {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: #0095f6;
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.eapps-instagram-feed-header-follow-button:hover {
+  background: #1877f2;
+  color: #fff !important;
+}
+
+.eapps-instagram-feed-container {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
+}
+
+.eapps-instagram-feed-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  padding: 6px;
+}
+
+.eapps-instagram-feed-posts-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: pointer;
+  background: #fafafa;
+}
+
+.eapps-instagram-feed-posts-item-image,
+.eapps-instagram-feed-posts-item-image img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.eapps-instagram-feed-posts-item-overlay {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.2s ease;
   pointer-events: none;
 }
 
-.rf-gallery-section .item-inner {
-  position: relative;
-  display: block;
+.eapps-instagram-feed-posts-item:hover .eapps-instagram-feed-posts-item-overlay {
+  opacity: 1;
 }
 
-.rf-ig-cta {
-  margin: 0;
+.eapps-instagram-feed-posts-item-overlay svg {
+  width: 28px;
+  height: 28px;
+  fill: #fff;
 }
 
-.rf-ig-cta .fixit_btn {
-  display: inline-block;
+.eapps-instagram-feed-posts-item-video-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+@media (max-width: 991px) {
+  .eapps-instagram-feed-posts-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .eapps-instagram-feed-posts-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .eapps-instagram-feed-header {
+    padding: 14px 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  .eapps-instagram-feed-posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    padding: 4px;
+  }
 }

@@ -35,8 +35,27 @@ if (!res.ok) {
 }
 
 const data = await res.json();
-const edges = data?.data?.user?.edge_owner_to_timeline_media?.edges || [];
+const user = data?.data?.user;
+const edges = user?.edge_owner_to_timeline_media?.edges || [];
 mkdirSync(IMG_DIR, { recursive: true });
+
+async function downloadImage(remote, localFile) {
+  try {
+    const imgRes = await fetch(remote, { headers: { 'User-Agent': headers['User-Agent'] } });
+    if (imgRes.ok) {
+      writeFileSync(localFile, Buffer.from(await imgRes.arrayBuffer()));
+      return true;
+    }
+  } catch (err) {
+    console.warn('Image download failed:', localFile, err.message);
+  }
+  return false;
+}
+
+const profilePic = user?.profile_pic_url_hd || user?.profile_pic_url;
+if (profilePic) {
+  await downloadImage(profilePic, join(IMG_DIR, 'profile.jpg'));
+}
 
 const posts = [];
 for (const { node } of edges.slice(0, 12)) {
@@ -46,15 +65,7 @@ for (const { node } of edges.slice(0, 12)) {
   const localPath = `images/gallery/${shortcode}.jpg`;
   const localFile = join(IMG_DIR, `${shortcode}.jpg`);
 
-  try {
-    const imgRes = await fetch(remote, { headers: { 'User-Agent': headers['User-Agent'] } });
-    if (imgRes.ok) {
-      const buf = Buffer.from(await imgRes.arrayBuffer());
-      writeFileSync(localFile, buf);
-    }
-  } catch (err) {
-    console.warn('Image download failed for', shortcode, err.message);
-  }
+  await downloadImage(remote, localFile);
 
   posts.push({
     shortcode,
@@ -68,6 +79,11 @@ const payload = {
   username: USERNAME,
   profileUrl: `https://www.instagram.com/${USERNAME}/`,
   updatedAt: new Date().toISOString().slice(0, 10),
+  profile: {
+    username: user?.username || USERNAME,
+    fullName: user?.full_name || 'RAMDEVRA FORGE',
+    avatar: 'images/gallery/profile.jpg',
+  },
   posts,
 };
 
