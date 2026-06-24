@@ -1,5 +1,5 @@
 /**
- * Injects Elfsight-style Instagram feed markup into index.html.
+ * Injects full-width post grid into index.html (no header or follow button).
  */
 import { readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
@@ -23,11 +23,7 @@ function esc(str) {
     .replace(/"/g, '&quot;');
 }
 
-const data = JSON.parse(readFileSync(DATA, 'utf8'));
-const { posts = [], profile = {}, username = 'ramdevraforge' } = data;
-const avatar = esc((profile.avatar || 'images/gallery/profile.jpg').replace(/^\//, ''));
-const fullName = esc(profile.fullName || 'RAMDEVRA FORGE');
-const handle = esc(profile.username || username);
+const { posts = [], username = 'ramdevraforge' } = JSON.parse(readFileSync(DATA, 'utf8'));
 
 const postHtml = posts
   .map((post) => {
@@ -37,28 +33,16 @@ const postHtml = posts
       : '';
     return (
       `<div class="eapps-instagram-feed-posts-item" data-sc="${esc(post.shortcode)}" role="button" tabindex="0" aria-label="View post">` +
-      `<div class="eapps-instagram-feed-posts-item-image"><img src="${image}" alt="" width="320" height="320" /></div>` +
+      `<div class="eapps-instagram-feed-posts-item-image"><img src="${image}" alt="" width="480" height="480" /></div>` +
       `<div class="eapps-instagram-feed-posts-item-overlay">${IG_ICON}</div>` +
       `${video}</div>`
     );
   })
   .join('\n');
 
-const widgetHtml = `<div class="eapps-instagram-feed" id="rf-social-feed" data-user="${handle}">
-<div class="eapps-instagram-feed-header">
-<div class="eapps-instagram-feed-header-inner">
-<button type="button" class="eapps-instagram-feed-header-user-image" data-action="profile" aria-label="View profile"><img src="${avatar}" alt="${handle}" width="48" height="48" /></button>
-<div class="eapps-instagram-feed-header-user">
-<div class="eapps-instagram-feed-header-user-name">${handle}</div>
-<div class="eapps-instagram-feed-header-user-fullname">${fullName}</div>
-</div>
-</div>
-<button type="button" class="eapps-instagram-feed-header-follow-button" data-action="profile">Follow</button>
-</div>
-<div class="eapps-instagram-feed-container">
+const widgetHtml = `<div class="eapps-instagram-feed" id="rf-social-feed" data-user="${esc(username)}">
 <div class="eapps-instagram-feed-posts-grid">
 ${postHtml}
-</div>
 </div>
 </div>`;
 
@@ -71,4 +55,4 @@ if (!html.includes(START) || !html.includes(END)) {
 const pattern = new RegExp(`${START}[\\s\\S]*?${END}`);
 html = html.replace(pattern, `${START}\n${widgetHtml}\n${END}`);
 writeFileSync(INDEX, html, 'utf8');
-console.log(`Injected Elfsight-style feed with ${posts.length} posts into index.html`);
+console.log(`Injected ${posts.length} post tiles into index.html`);
